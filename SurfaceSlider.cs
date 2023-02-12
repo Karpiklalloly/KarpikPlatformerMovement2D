@@ -14,7 +14,7 @@ namespace Karpik.Movement.Platformer2D
         private ContactPoint2D _contactPoint = default;
         private Transform _contactTransform = default;
 
-        public OnSurfaceInfo Project(Vector2 forward, int maxDegree)
+        public OnSurfaceInfo Project(Vector2 forward, int maxAngle)
         {
             var angle = Vector2.Angle(forward, _normal);
             OnSurfaceInfo info = new()
@@ -29,11 +29,11 @@ namespace Karpik.Movement.Platformer2D
             {
                 if (angle >= 90)
                 {
-                    MoveWithBigAngle(ref info, forward, maxDegree, angle);
+                    MoveWithBigAngle(ref info, forward, maxAngle, angle);
                 }
                 else
                 {
-                    MoveWithLowAngle(ref info, forward, maxDegree, angle);
+                    MoveWithLowAngle(ref info, forward, maxAngle, angle);
                 }
             }
             else
@@ -78,21 +78,7 @@ namespace Karpik.Movement.Platformer2D
 
         private void MoveWithLowAngle(ref OnSurfaceInfo info, Vector2 forward, int maxDegree, float angle)
         {
-            if (angle < maxDegree)
-            {
-                if (info.AngleStraightDown != 0)
-                {
-                    MoveWithGoodPhysic(ref info, forward);
-                }
-                else
-                {
-                    MoveWithGoodPhysic(ref info, forward);
-                }
-            }
-            else
-            {
-                MoveWithGoodPhysic(ref info, forward);
-            }
+            MoveWithGoodPhysic(ref info, forward);
         }
 
         private void OnCollisionStay2D(Collision2D collision)

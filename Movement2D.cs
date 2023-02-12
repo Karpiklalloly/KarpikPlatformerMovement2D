@@ -40,6 +40,7 @@ namespace Karpik.Movement.Platformer2D
             _surfaceSlider = GetComponent<SurfaceSlider>();
 
             _rigidbody.gravityScale = 0;
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
             _jumpState = JumpState.None;
         }
 
@@ -56,7 +57,7 @@ namespace Karpik.Movement.Platformer2D
             var standartMovement = FindStandartMovement(surfaceInfo.Movement);
             _movementDirection.x = standartMovement.x;
 
-            if (surfaceInfo.IsOnSolidSurface())
+            if (surfaceInfo.IsOnSolidSurface() && surfaceInfo.AngleStraightDown <= _maxAngleToMove)
             {
                 _jumpState = JumpState.OnJumpSurface;
             }
@@ -69,11 +70,6 @@ namespace Karpik.Movement.Platformer2D
 
             _movementDirection.y += gravity;
             _movementDirection.y += jump;
-
-            if (surfaceInfo.Angle > _maxAngleToMove)
-            {
-                MakeJumpZero();
-            }
 
             _rigidbody.MovePosition(_rigidbody.position + _movementDirection);
         }
